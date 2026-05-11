@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Anniversary</title>
+<style>
+       /* CSS Variables for Modern Aesthetic */
+       :root {
+           --primary-color: #8b4566; /* Deep rose */
+           --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #f3e6e8 100%);
+           --text-dark: #333;
+           --text-light: #666;
+           --font-heading: 'Georgia', serif;
+           --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+       }
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+       body {
+           background: var(--bg-gradient);
+           color: var(--text-dark);
+           font-family: var(--font-body);
+           min-height: 100vh;
+           overflow-x: hidden;
+           position: relative;
+       }
+       /* Floating Hearts Canvas */
+       #hearts-container {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           pointer-events: none;
+           z-index: 0;
+       }
+       .heart {
+           position: absolute;
+           color: rgba(224, 169, 181, 0.6);
+           font-size: 20px;
+           animation: floatUp linear forwards;
+       }
+       @keyframes floatUp {
+           0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+           100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+       }
+       /* Main Content Container */
+       .container {
+           max-width: 900px;
+           margin: 0 auto;
+           padding: 40px 20px;
+           position: relative;
+           z-index: 1;
+       }
+       /* Header Section */
+       header {
+           text-align: center;
+           margin-bottom: 50px;
+           opacity: 0;
+           transform: translateY(20px);
+           animation: fadeIn 1.5s ease forwards;
+       }
+       h1 {
+           font-family: var(--font-heading);
+           font-size: 3.5rem;
+           color: var(--primary-color);
+           margin-bottom: 10px;
+           letter-spacing: 2px;
+       }
+       .subtitle {
+           font-size: 1.2rem;
+           color: var(--text-light);
+           font-style: italic;
+       }
+       /* Photo Gallery */
+       .gallery {
+           display: flex;
+           flex-direction: column;
+           gap: 40px;
+           margin-bottom: 50px;
+       }
+       .photo-card {
+           background: white;
+           padding: 15px;
+           border-radius: 12px;
+           box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+           opacity: 0;
+           transform: translateY(30px);
+           transition: all 0.8s ease;
+       }
+       .photo-card.visible {
+           opacity: 1;
+           transform: translateY(0);
+       }
+       .photo-card img {
+           width: 100%;
+           height: auto;
+           border-radius: 8px;
+           object-fit: cover;
+       }
+       .photo-caption {
+           text-align: center;
+           margin-top: 15px;
+           font-family: var(--font-heading);
+           font-size: 1.3rem;
+           color: var(--primary-color);
+       }
+       /* Message Section */
+       .message-section {
+           background: white;
+           padding: 40px;
+           border-radius: 12px;
+           text-align: center;
+           box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+           opacity: 0;
+           transform: translateY(30px);
+           transition: all 0.8s ease;
+       }
+       .message-section.visible {
+           opacity: 1;
+           transform: translateY(0);
+       }
+       .message-section p {
+           font-size: 1.2rem;
+           line-height: 1.8;
+           color: var(--text-dark);
+           margin-bottom: 20px;
+       }
+       /* Animations */
+       @keyframes fadeIn {
+           to { opacity: 1; transform: translateY(0); }
+       }
+       /* Responsive Design */
+       @media (min-width: 768px) {
+           .gallery {
+               flex-direction: row;
+               align-items: center;
+           }
+           .photo-card {
+               flex: 1;
+           }
+       }
+</style>
+</head>
+<body>
+<div id="hearts-container"></div>
+<div class="container">
+<header>
+<h1>Happy Anniversary!</h1>
+<p class="subtitle">Celebrating love, laughter, and a beautiful journey together.</p>
+</header>
+<div class="gallery">
+<div class="photo-card reveal">
+<img src="duo.jpeg" alt="Happy Couple">
+<div class="photo-caption">Where it all began...</div>
+</div>
+<div class="photo-card reveal">
+<img src="trio.jpeg" alt="Beautiful Family">
+<div class="photo-caption">...and the beautiful family you've built.</div>
+</div>
+</div>
+<div class="message-section reveal">
+<p>Wishing you both a very Happy Anniversary! May your bond continue to grow stronger with each passing year.</p>
+<p>From your beautiful moments as a couple to the wonderful family you are today, your journey is truly inspiring. Here’s to many more years of happiness, health, and endless love.</p>
+<h2 style="color: var(--primary-color); font-family: var(--font-heading); margin-top: 20px;">Cheers to forever! ❤️</h2>
+</div>
+</div>
+<script>
+       // 1. Scroll Reveal Animation
+       const revealElements = document.querySelectorAll('.reveal');
+       const revealOptions = {
+           threshold: 0.15,
+           rootMargin: "0px 0px -50px 0px"
+       };
+       const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+           entries.forEach(entry => {
+               if (!entry.isIntersecting) return;
+               entry.target.classList.add('visible');
+               observer.unobserve(entry.target);
+           });
+       }, revealOptions);
+       revealElements.forEach(el => {
+           revealOnScroll.observe(el);
+       });
+       // 2. Floating Hearts Animation
+       function createHeart() {
+           const heart = document.createElement('div');
+           heart.classList.add('heart');
+           heart.innerHTML = '❤';
+           // Randomize position, size, and animation duration
+           heart.style.left = Math.random() * 100 + 'vw';
+           heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4s to 7s
+           heart.style.fontSize = Math.random() * 20 + 10 + 'px'; // 10px to 30px
+           document.getElementById('hearts-container').appendChild(heart);
+           // Remove heart after animation completes
+           setTimeout(() => {
+               heart.remove();
+           }, 7000);
+       }
+       // Generate a new heart every 400 milliseconds
+       setInterval(createHeart, 400);
+</script>
+</body>
+</html>
